@@ -1,7 +1,10 @@
 using System;
 using System.Collections.Generic;
-using KMeansClustering.InputReader;
+
 using Newtonsoft.Json;
+
+using KMeansClustering.InputReader;
+
 namespace KMeansClustering.Graph
 {
     public class KMeansAlgorithm
@@ -56,8 +59,6 @@ namespace KMeansClustering.Graph
                 _centroidNodes.Add(
                         new CentroidNode(RandomDouble(xMin, xMax), RandomDouble(yMin, yMax))
                         );
-
-                Console.WriteLine(_centroidNodes[idx].ToString());
             }
         }
 
@@ -69,11 +70,15 @@ namespace KMeansClustering.Graph
         public void PerformClustering()
         {
             this._clusterMap.Clear();
+            
+            double largestChange = Double.NegativeInfinity;
 
             for (int iter = 0; iter < Globals.MAX_ITER; iter++)
             {
                 this._clusterMap.Clear();
                 
+                largestChange = Double.NegativeInfinity;
+
                 /*
                  * There's probably a more elegant way of populating the clustermap...
                  */
@@ -105,8 +110,26 @@ namespace KMeansClustering.Graph
                     
                     double xMean = xTotal / dataNodes.Count;
                     double yMean = yTotal / dataNodes.Count;
+                    
+                    /*
+                     * Use a helper-node to assist in calculating the largest change in this current iteration.
+                     */
+
+                    CentroidNode helperNode = new CentroidNode(xMean, yMean);
+
+                    double currentDistance = GetDistance(centroidNode, helperNode);
+
+                    if (currentDistance > largestChange)
+                    {
+                        largestChange = currentDistance;
+                    }
 
                     centroidNode.Move(xMean, yMean);
+                }
+
+                if (largestChange < Globals.EPSILON)
+                {
+                    break;
                 }
             }
         }
@@ -134,8 +157,8 @@ namespace KMeansClustering.Graph
 
                 i++;
             }
-            
-            Console.WriteLine("__________________________");
+
+            Console.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~");
 
         }
 

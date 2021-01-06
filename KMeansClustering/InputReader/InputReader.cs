@@ -1,9 +1,10 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.IO;
-using KMeansClustering.Graph;
+using System.Collections.Generic;
+
 using Newtonsoft.Json;
+
+using KMeansClustering.Graph;
 
 namespace KMeansClustering.InputReader
 {
@@ -18,8 +19,6 @@ namespace KMeansClustering.InputReader
             ImportJson(args[0]);
 
             _k = Int32.Parse(args[1]);
-
-            Console.WriteLine(this._dataNodes.Count);
         }
 
         private void ImportJson(string filename)
@@ -29,10 +28,6 @@ namespace KMeansClustering.InputReader
                 string content = reader.ReadToEnd();
 
                 JsonFormat jsonInput = JsonConvert.DeserializeObject<JsonFormat>(content);
-
-                Console.WriteLine(content);
-
-                Console.WriteLine(jsonInput.x.Count);
 
                 if (jsonInput.x.Count == jsonInput.y.Count && jsonInput.x.Count > 0)
                 {

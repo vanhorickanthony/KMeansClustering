@@ -9,8 +9,8 @@ namespace KMeansClustering
      */
     public static class Globals
     {
-        public static double EPSILON = 0.1;
-        public static double MAX_ITER = 1000;
+        public static readonly double EPSILON = 0.01;
+        public static readonly double MAX_ITER = 1000;
     }
     
     class Program
@@ -30,7 +30,6 @@ namespace KMeansClustering
             algorithm.PerformClustering();
             
             algorithm.PrettyPrintClusters();
-
         }
     }
 }
